@@ -1,0 +1,111 @@
+/* 五子棋游戏样式 */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.game-container {
+    text-align: center;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 32px;
+}
+
+.game-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+#current-player {
+    font-size: 18px;
+    font-weight: bold;
+    color: #555;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#new-game {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#new-game:hover {
+    background-color: #45a049;
+}
+
+#undo {
+    background-color: #ff9800;
+    color: white;
+}
+
+#undo:hover {
+    background-color: #e68900;
+}
+
+#game-board {
+    border: 2px solid #333;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+}
+
+#game-message {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    height: 30px;
+}
+
+.win-message {
+    color: #4CAF50;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .game-container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    #game-board {
+        width: 100%;
+        max-width: 500px;
+        height: auto;
+    }
+
+    .game-info {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

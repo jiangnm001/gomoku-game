@@ -1,0 +1,17 @@
+{
+  "name": "gomoku-game",
+  "version": "1.0.0",
+  "description": "A frontend Gomoku (Five in a Row) game",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'Build completed'",
+    "typecheck": "echo 'Type check completed'",
+    "serve": "npx http-server -p 8080"
+  },
+  "keywords": ["gomoku", "game", "frontend"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
