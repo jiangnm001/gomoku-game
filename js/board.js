@@ -170,7 +170,8 @@ export class Board {
     // 清除预览棋子
     clearPreview() {
         // 重新绘制整个棋盘
-        this.drawBoard(this.lastBoardState || Array(this.boardSize).fill(null).map(() => Array(this.boardSize).fill(0)));
+        const boardState = this.lastBoardState || Array(this.boardSize).fill(null).map(() => Array(this.boardSize).fill(0));
+        this.drawBoard(boardState);
     }
 
     // 获取棋盘大小
@@ -204,6 +205,9 @@ export class Board {
 
     // 高亮显示获胜的五子
     highlightWinningStones(winningStones) {
+        // 保存当前棋盘状态
+        this.saveBoardState(this.lastBoardState || Array(this.boardSize).fill(null).map(() => Array(this.boardSize).fill(0)));
+
         // 重新绘制棋盘
         this.drawBoard(this.lastBoardState);
 

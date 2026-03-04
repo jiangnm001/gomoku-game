@@ -61,11 +61,23 @@ function handleCanvasClick(event) {
         // 更新棋盘显示
         board.drawBoard(game.getBoard());
 
+        // 显示最后一步标记
+        const lastMove = game.getLastMove();
+        if (lastMove) {
+            board.drawLastMoveMarker(lastMove.row, lastMove.col);
+        }
+
         // 检查游戏是否结束
         if (game.isGameOver()) {
             const winner = game.getWinner();
             const winnerText = winner === 1 ? '黑棋' : '白棋';
             renderMessage(`${winnerText}获胜！`, true);
+
+            // 高亮获胜的五子
+            const winningStones = game.getWinningStones();
+            if (winningStones) {
+                board.highlightWinningStones(winningStones);
+            }
         } else {
             // 切换玩家
             game.switchPlayer();
@@ -86,8 +98,23 @@ function handleNewGame() {
 function handleUndo() {
     if (game.undo()) {
         board.drawBoard(game.getBoard());
+
+        // 显示最后一步标记（如果有的话）
+        const lastMove = game.getLastMove();
+        if (lastMove) {
+            board.drawLastMoveMarker(lastMove.row, lastMove.col);
+        }
+
         renderCurrentPlayer();
         renderMessage('');
+
+        // 显示剩余可悔棋步数
+        const undoCount = game.getUndoCount();
+        if (undoCount > 0) {
+            renderMessage(`还可悔棋 ${undoCount} 步`);
+        }
+    } else {
+        renderMessage('没有可悔的棋步');
     }
 }
 

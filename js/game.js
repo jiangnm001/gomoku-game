@@ -13,6 +13,8 @@ export class Game {
         this.currentPlayer = 1; // 1表示黑棋，2表示白棋
         this.gameOver = false;
         this.winner = null;
+        this.winningStones = null; // 获胜的五子坐标
+        this.lastMove = null; // 最后一步的位置
         this.moveHistory = []; // 记录走子历史，用于悔棋
     }
 
@@ -61,13 +63,16 @@ export class Game {
         // 落子
         this.board[row][col] = this.currentPlayer;
 
-        // 记录走子历史
-        this.moveHistory.push({ row, col, player: this.currentPlayer });
+        // 记录走子历史和最后一步
+        this.lastMove = { row, col, player: this.currentPlayer };
+        this.moveHistory.push(this.lastMove);
 
         // 检查是否获胜
-        if (this.checkWin(row, col, this.currentPlayer)) {
+        const winningStones = this.checkWin(row, col, this.currentPlayer);
+        if (winningStones) {
             this.gameOver = true;
             this.winner = this.currentPlayer;
+            this.winningStones = winningStones; // 保存获胜的五子坐标
             return true;
         }
 
@@ -80,7 +85,7 @@ export class Game {
         return true;
     }
 
-    // 悔棋
+    // 悔棋（支持多步悔棋）
     undo() {
         if (this.moveHistory.length === 0) {
             return false;
@@ -102,7 +107,12 @@ export class Game {
         return true;
     }
 
-    // 检查是否获胜
+    // 获取可悔棋的步数
+    getUndoCount() {
+        return this.moveHistory.length;
+    }
+
+    // 检查是否获胜（返回获胜的五子坐标）
     checkWin(row, col, player) {
         // 检查四个方向：横、竖、左斜、右斜
         const directions = [
@@ -114,6 +124,7 @@ export class Game {
 
         for (const [dx, dy] of directions) {
             let count = 1; // 当前棋子
+            let winningStones = [[row, col]]; // 获胜的五子坐标
 
             // 向一个方向检查
             for (let i = 1; i < 5; i++) {
@@ -121,6 +132,7 @@ export class Game {
                 const newCol = col + dy * i;
                 if (this.isValidPosition(newRow, newCol) && this.board[newRow][newCol] === player) {
                     count++;
+                    winningStones.push([newRow, newCol]);
                 } else {
                     break;
                 }
@@ -132,6 +144,7 @@ export class Game {
                 const newCol = col - dy * i;
                 if (this.isValidPosition(newRow, newCol) && this.board[newRow][newCol] === player) {
                     count++;
+                    winningStones.unshift([newRow, newCol]);
                 } else {
                     break;
                 }
@@ -139,7 +152,8 @@ export class Game {
 
             // 如果连续5个或以上，则获胜
             if (count >= 5) {
-                return true;
+                // 只返回连续的五子（可能多于5个）
+                return count === 5 ? winningStones : winningStones.slice(0, 5);
             }
         }
 
@@ -179,6 +193,16 @@ export class Game {
     // 获取棋盘大小
     getBoardSize() {
         return this.boardSize;
+    }
+
+    // 获取最后一步的位置
+    getLastMove() {
+        return this.lastMove;
+    }
+
+    // 获取获胜的五子坐标
+    getWinningStones() {
+        return this.winningStones;
     }
 
     // 获取当前游戏状态
